@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('/usuarios', 'App\Http\Controllers\ControllerApiUsuarios');
+Route::get('/usuarios/{mail}/{pass}', 'App\Http\Controllers\ControllerApiUsuarios@login')->name('usuarios.login');
+Route::get('/dejargrupo/{id_usuario}', 'App\Http\Controllers\ControllerApiUsuarios@dejargrupo')->name('usuarios.dejargrupo');
+Route::get('/unirseaungrupo/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiUsuarios@unirseaungrupo')->name('usuarios.unirseaungrupo');
+
+Route::resource('/grupos', 'App\Http\Controllers\ControllerApiGrupos');
+Route::get('/GetVecinosGrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@GetVecinosGrupo')->name('grupos.GetVecinosGrupo');
