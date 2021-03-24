@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Prealerta;
 
-class ControllerApiAlertas extends Controller
+class ControllerApiPrealertas extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,8 @@ class ControllerApiAlertas extends Controller
      */
     public function index()
     {
-        //
+        $prealertas=Prealerta::all();
+        return $prealertas;
     }
 
     /**

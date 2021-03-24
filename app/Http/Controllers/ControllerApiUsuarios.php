@@ -45,8 +45,12 @@ class ControllerApiUsuarios extends Controller
         $usuario->mail=$request->mail;
         $usuario->pass=$request->pass;
         $usuario->ult_login=GetDateTimeNow('Y-m-d H:i:s');
-        $usuario->save();
-        return $usuario;
+        
+        if($usuario->save()){
+            loginauto($request->mail,$request->pass);           
+            
+        }
+        
     }
 
     /**
@@ -83,11 +87,13 @@ class ControllerApiUsuarios extends Controller
     public function update(Request $request, $id_usuario)
     {
         $usuario_update=Usuario::find($id_usuario);
-        $usuario->nombres=$request->nombres;
-        $usuario->apellidos=$request->apellidos;
-        $usuario->direccion=$request->direccion;
-        $usuario->pass=$request->pass;
-        $usuario_update->save();
+        $usuario_update->nombres=$request->nombres;
+        $usuario_update->apellidos=$request->apellidos;
+        $usuario_update->direccion=$request->direccion;
+        $usuario_update->pass=$request->pass;
+        if($usuario_update->save()){
+            return $usuario_update;
+        }
     }
 
     /**
@@ -105,7 +111,7 @@ class ControllerApiUsuarios extends Controller
         $usuario = DB::table('usuarios')
         ->leftjoin('grupos', 'grupos.id_grupo', '=', 'usuarios.id_grupo')
         ->where('mail',$mail)->where('pass',$pass)
-        ->get(['usuarios.id_usuario','usuarios.nombres','usuarios.apellidos','usuarios.direccion','usuarios.id_grupo','grupos.nombre as nombre_grupo','usuarios.ult_login']);
+        ->get(['usuarios.id_usuario','usuarios.nombres','usuarios.apellidos','usuarios.direccion','usuarios.id_grupo','grupos.id_usuario as id_usuario_grupo','grupos.nombre as nombre_grupo','usuarios.ult_login']);
         if(count($usuario)>0){
             $usuario_update=Usuario::find($usuario[0]->id_usuario);
             $usuario_update->ult_login=GetDateTimeNow();
@@ -114,6 +120,17 @@ class ControllerApiUsuarios extends Controller
         }
         
         return $usuario;
+
+    }
+
+    public function loginauto($mail,$pass){
+        $usuario = DB::table('usuarios')
+        ->leftjoin('grupos', 'grupos.id_grupo', '=', 'usuarios.id_grupo')
+        ->where('mail',$mail)->where('pass',$pass)
+        ->get(['usuarios.id_usuario','usuarios.nombres','usuarios.apellidos','usuarios.direccion','usuarios.id_grupo','grupos.id_usuario as id_usuario_grupo','grupos.nombre as nombre_grupo','usuarios.ult_login']);
+       
+        
+        return json_encode($usuario[0]);
 
     }
 
@@ -127,7 +144,7 @@ class ControllerApiUsuarios extends Controller
 
     }
 
-    public function unirseaungrupo($id_usuario,$id_grupo){
+    public function unirse($id_usuario,$id_grupo){
         $grupo=Grupo::find($id_grupo);    
 
         if($grupo){

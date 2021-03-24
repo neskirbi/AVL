@@ -95,7 +95,7 @@ class ControllerApiGrupos extends Controller
         //
     }
 
-    public function GetVecinosGrupo($id_grupo){
+    public function migrupo($id_grupo){
         $usuarios = DB::table('usuarios')
         ->where('id_grupo',$id_grupo)
         ->get(['id_usuario','nombres','apellidos','direccion','ult_login']);

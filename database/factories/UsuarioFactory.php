@@ -22,12 +22,13 @@ class UsuarioFactory extends Factory
     public function definition()
     {
         return [
-            'id_usuario'=>$this->faker->unique()->name,
+            'id_usuario'=>GetUuid(),
+            //'id_grupo' => 'eb3fc2de548042ed9cf20f44cd8819e5',
             'nombres'=>$this->faker->name,
             'apellidos'=>$this->faker->name,
             'direccion'=>$this->faker->text,
-            'mail'=>$this->faker->unique()->name,
-            'pass'=>$this->faker->name,
+            'mail'=>$this->faker->unique()->email,
+            'pass'=>'123',
             'ult_login'=>now()
         ];
     }

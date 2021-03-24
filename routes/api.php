@@ -19,9 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('/usuarios', 'App\Http\Controllers\ControllerApiUsuarios');
-Route::get('/usuarios/{mail}/{pass}', 'App\Http\Controllers\ControllerApiUsuarios@login')->name('usuarios.login');
+Route::get('/login/{mail}/{pass}', 'App\Http\Controllers\ControllerApiUsuarios@login')->name('usuarios.login');
 Route::get('/dejargrupo/{id_usuario}', 'App\Http\Controllers\ControllerApiUsuarios@dejargrupo')->name('usuarios.dejargrupo');
-Route::get('/unirseaungrupo/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiUsuarios@unirseaungrupo')->name('usuarios.unirseaungrupo');
 
 Route::resource('/grupos', 'App\Http\Controllers\ControllerApiGrupos');
-Route::get('/GetVecinosGrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@GetVecinosGrupo')->name('grupos.GetVecinosGrupo');
+Route::get('/unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiUsuarios@unirse')->name('usuarios.unirse');
+Route::get('/migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
+
+Route::resource('/prealertas', 'App\Http\Controllers\ControllerApiPrealertas');
