@@ -23,7 +23,11 @@ Route::get('/login/{mail}/{pass}', 'App\Http\Controllers\ControllerApiUsuarios@l
 Route::get('/dejargrupo/{id_usuario}', 'App\Http\Controllers\ControllerApiUsuarios@dejargrupo')->name('usuarios.dejargrupo');
 
 Route::resource('/grupos', 'App\Http\Controllers\ControllerApiGrupos');
-Route::get('/unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiUsuarios@unirse')->name('usuarios.unirse');
 Route::get('/migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
+Route::get('/unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
+Route::get('/salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
+//Route::get('/unirseconqr/{id_grupo}/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@unirseconqr')->name('grupos.unirse');
 
 Route::resource('/prealertas', 'App\Http\Controllers\ControllerApiPrealertas');
+
+Route::resource('/sugerencias','App\Http\Controllers\ControllerApiSugerencias');

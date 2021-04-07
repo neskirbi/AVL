@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Grupo;
-use App\Models\Usuario;
-use DB;
+use App\Models\Sugerencia;
 
-class ControllerApiGrupos extends Controller
+class ControllerApiSugerencias extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,8 @@ class ControllerApiGrupos extends Controller
      */
     public function index()
     {
-        //
+        $sugerencia=Sugerencia::all();
+        return $sugerencia;
     }
 
     /**
@@ -37,16 +36,12 @@ class ControllerApiGrupos extends Controller
      */
     public function store(Request $request)
     {
-        $grupo=new Grupo();
-        $id_grupo=GetUuid();
-        $grupo->id_grupo=$id_grupo;
-        $grupo->id_usuario=$request->id_usuario;
-        $grupo->nombre=$request->nombre;
-        $grupo->save();
-        $usuario_update=Usuario::find($request->id_usuario);
-        $usuario_update->id_grupo=$id_grupo;
-        $usuario_update->save();
-        return $grupo;
+        $sugerencia=new Sugerencia();
+        $sugerencia->id_sugerencia=GetUuid();
+        $sugerencia->id_usuario=$request->id_usuario;
+        $sugerencia->sugerencia=$request->sugerencia;    
+        $sugerencia->save();  
+        return $sugerencia;
     }
 
     /**
@@ -55,10 +50,9 @@ class ControllerApiGrupos extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id_grupo)
+    public function show($id)
     {
-        $grupo=Grupo::find($id_grupo);
-        return $grupo;
+        //
     }
 
     /**
@@ -93,36 +87,5 @@ class ControllerApiGrupos extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function migrupo($id_grupo){
-        $usuarios = DB::table('usuarios')
-        ->where('id_grupo',$id_grupo)
-        ->get(['id_usuario','nombres','apellidos','direccion','ult_login']);
-        return $usuarios;
-    }
-
-    public function unirse($id_usuario,$id_grupo){
-        $grupo=Grupo::find($id_grupo);    
-
-        if($grupo){
-            $usuario_update=Usuario::find($id_usuario);       
-            $usuario_update->id_grupo=$id_grupo;
-            $usuario_update->save();
-            return $grupo;
-        }
-        
-        
-
-    }
-
-    
-    public function salir($id_usuario){
-        $usuario_update=Usuario::find($id_usuario);       
-        $usuario_update->id_grupo='';
-        $usuario_update->save();
-        
-        return $usuario_update;
-
     }
 }

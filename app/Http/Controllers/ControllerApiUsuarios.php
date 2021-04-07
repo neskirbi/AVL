@@ -135,26 +135,6 @@ class ControllerApiUsuarios extends Controller
     }
 
 
-    public function dejargrupo($id_usuario){
-        $usuario_update=Usuario::find($id_usuario);       
-        $usuario_update->id_grupo='';
-        $usuario_update->save();
-        
-        return $usuario_update;
 
-    }
-
-    public function unirse($id_usuario,$id_grupo){
-        $grupo=Grupo::find($id_grupo);    
-
-        if($grupo){
-            $usuario_update=Usuario::find($id_usuario);       
-            $usuario_update->id_grupo=$id_grupo;
-            $usuario_update->save();
-            return $usuario_update;
-        }
-        
-        
-
-    }
+    
 }
