@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Android;
 
 use Illuminate\Http\Request;
-use App\Models\Prealerta;
 
-class ControllerApiPrealertas extends Controller
+class ControllerApiBloquedos extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class ControllerApiPrealertas extends Controller
      */
     public function index()
     {
-        $prealertas=Prealerta::all();
-        return $prealertas;
+        //
     }
 
     /**

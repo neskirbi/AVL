@@ -18,8 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/usuarios', 'App\Http\Controllers\ControllerApiUsuarios');
-Route::get('/login/{mail}/{pass}', 'App\Http\Controllers\ControllerApiUsuarios@login')->name('usuarios.login');
+Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
+
+Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
+
 Route::get('/dejargrupo/{id_usuario}', 'App\Http\Controllers\ControllerApiUsuarios@dejargrupo')->name('usuarios.dejargrupo');
 
 Route::resource('/grupos', 'App\Http\Controllers\ControllerApiGrupos');
