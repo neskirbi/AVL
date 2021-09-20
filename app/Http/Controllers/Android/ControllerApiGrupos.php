@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Android;
 
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Grupo;
 use App\Models\Usuario;
@@ -16,7 +18,7 @@ class ControllerApiGrupos extends Controller
      */
     public function index()
     {
-        //
+        return'ok';
     }
 
     /**
@@ -35,18 +37,33 @@ class ControllerApiGrupos extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function CrearGrupo(Request $request)
     {
-        $grupo=new Grupo();
-        $id_grupo=GetUuid();
-        $grupo->id_grupo=$id_grupo;
-        $grupo->id_usuario=$request->id_usuario;
-        $grupo->nombre=$request->nombre;
-        $grupo->save();
+        
+
+        
+        if($request->id_usuario==null || $request->nombre==null)
+        {
+            return array('error'=>'Los datos no puedes ser nulos.');            
+        }
+        
         $usuario_update=Usuario::find($request->id_usuario);
-        $usuario_update->id_grupo=$id_grupo;
-        $usuario_update->save();
-        return $grupo;
+        if($usuario_update){
+            $grupo=new Grupo();
+            $id_grupo=GetUuid();
+            $grupo->id_grupo=$id_grupo;
+            $grupo->id_usuario=$request->id_usuario;
+            $grupo->nombre=$request->nombre;
+            $grupo->save();
+
+        
+            $usuario_update->id_grupo=$id_grupo;
+            $usuario_update->save();
+            return $grupo;
+        }else{
+            return array('error'=>'El usuario no esta registrado.');
+        }
+        
     }
 
     /**
