@@ -11,25 +11,7 @@ use DB;
 
 class ControllerApiGrupos extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return'ok';
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+     
 
     /**
      * Store a newly created resource in storage.
@@ -66,80 +48,17 @@ class ControllerApiGrupos extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id_grupo)
-    {
-        $grupo=Grupo::find($id_grupo);
-        return $grupo;
-    }
+   function DejarGrupo(Request $request){
+       $usuario=Usuario::find($request->id_usuario);
+       if(!$usuario){
+        return array('error'=>'El usuario no esta registrado.');
+       }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function migrupo($id_grupo){
-        $usuarios = DB::table('usuarios')
-        ->where('id_grupo',$id_grupo)
-        ->get(['id_usuario','nombres','apellidos','direccion','ult_login']);
-        return $usuarios;
-    }
-
-    public function unirse($id_usuario,$id_grupo){
-        $grupo=Grupo::find($id_grupo);    
-
-        if($grupo){
-            $usuario_update=Usuario::find($id_usuario);       
-            $usuario_update->id_grupo=$id_grupo;
-            $usuario_update->save();
-            return $grupo;
-        }
-        
-        
-
-    }
-
-    
-    public function salir($id_usuario){
-        $usuario_update=Usuario::find($id_usuario);       
-        $usuario_update->id_grupo='';
-        $usuario_update->save();
-        
-        return $usuario_update;
-
-    }
+       $usuario->id_grupo='';
+       if($usuario->save()){
+            return $request;
+       }else{
+            return array('error'=>'Error al salir del grupo.');
+       }
+   }
 }

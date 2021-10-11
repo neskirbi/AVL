@@ -22,9 +22,11 @@ Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registra
 
 Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
 
-Route::get('dejargrupo/{id_usuario}', 'App\Http\Controllers\ControllerApiUsuarios@dejargrupo')->name('usuarios.dejargrupo');
 
 Route::post('CrearGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@CrearGrupo');
+
+Route::post('DejarGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@DejarGrupo');
+
 //Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
 //Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
 //Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
