@@ -48,17 +48,32 @@ class ControllerApiGrupos extends Controller
         
     }
 
-   function DejarGrupo(Request $request){
-       $usuario=Usuario::find($request->id_usuario);
-       if(!$usuario){
-        return array('error'=>'El usuario no esta registrado.');
-       }
+    function UnirseGrupo(Request $request){
+        $grupo=Grupo::find($request->id_grupo);
+        if($grupo){
+            $usuario=Usuario::find($request->id_usuario);
+            $usuario->id_grupo=$request->id_grupo;
+            if($usuario->save()){
+                return $grupo;
+            }else{
+                return array('error'=>'Error al guardar los datos.');
+            }
+        }else{
+            return array('error'=>'El grupo no existe.');
+        }
+    }
 
-       $usuario->id_grupo='';
-       if($usuario->save()){
-            return $request;
-       }else{
-            return array('error'=>'Error al salir del grupo.');
-       }
-   }
+    function DejarGrupo(Request $request){
+        $usuario=Usuario::find($request->id_usuario);
+        if(!$usuario){
+            return array('error'=>'El usuario no esta registrado.');
+        }
+
+        $usuario->id_grupo='';
+        if($usuario->save()){
+                return $request;
+        }else{
+                return array('error'=>'Error al salir del grupo.');
+        }
+    }
 }

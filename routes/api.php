@@ -25,6 +25,8 @@ Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
 
 Route::post('CrearGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@CrearGrupo');
 
+Route::post('UnirseGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@UnirseGrupo');
+
 Route::post('DejarGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@DejarGrupo');
 
 //Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
