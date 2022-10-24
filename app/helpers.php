@@ -11,4 +11,26 @@ function GetUuid(){
 function GetDateTimeNow(){
     return date('Y-m-d H:i:s');
 }
+
+
+function PostmanAndroid($request){
+    if(isset($request->android)){
+        $request=$request->android;
+    }else{
+        $request=str_replace("\"",'"',json_encode($request->all()));
+    }
+    return json_decode($request,1);
+}
+
+
+function RespuestaAndroid($status,$msn,$datos=array()){
+    $respuesta=array();
+    if($status){
+        $respuesta[]=array('status'=>$status,'msn'=>$msn,'datos'=>$datos);
+    }else{
+        $respuesta[]=array('status'=>$status,'msn'=>$msn);
+    }
+    
+    return $respuesta;
+}
 ?>

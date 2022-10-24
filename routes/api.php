@@ -18,9 +18,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+/**
+ * Rutas Usiarios 
+ */
+
 Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
 
 Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
+
+Route::Post('GetDatos', 'App\Http\Controllers\Android\UsuarioController@GetDatos');
+
+
+Route::Post('UpdateDatos', 'App\Http\Controllers\Android\UsuarioController@UpdateDatos');
+
+Route::Post('UpdatePass', 'App\Http\Controllers\Android\UsuarioController@UpdatePass');
 
 
 Route::post('CrearGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@CrearGrupo');
