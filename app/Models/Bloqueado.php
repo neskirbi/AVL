@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bloqueado extends Model
 {
-    use HasFactory;
+    use HasFactory; 
+    protected $primaryKey = 'id_bloqueado'; // or null
+    public $incrementing = false;
 }

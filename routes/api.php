@@ -41,6 +41,17 @@ Route::post('UnirseGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@Uni
 
 Route::post('DejarGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@DejarGrupo');
 
+
+Route::Post('GetVecinos', 'App\Http\Controllers\Android\VecinoController@GetVecinos');
+
+Route::Post('GetBloqueados', 'App\Http\Controllers\Android\VecinoController@GetBloqueados');
+
+
+
+Route::Post('BloquearVecino', 'App\Http\Controllers\Android\VecinoController@BloquearVecino');
+
+Route::Post('DesbloquearVecino', 'App\Http\Controllers\Android\VecinoController@DesbloquearVecino');
+
 //Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
 //Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
 //Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
