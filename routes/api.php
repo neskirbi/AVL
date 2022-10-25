@@ -23,6 +23,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Rutas Usiarios 
  */
 
+ 
+Route::Post('GetAlertas', 'App\Http\Controllers\Android\AlertaController@GetAlertas');
+
+
 Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
 
 Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
@@ -60,6 +64,3 @@ Route::Post('DesbloquearVecino', 'App\Http\Controllers\Android\VecinoController@
 //Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
 //Route::get('/unirseconqr/{id_grupo}/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@unirseconqr')->name('grupos.unirse');
 
-Route::resource('/prealertas', 'App\Http\Controllers\ControllerApiPrealertas');
-
-Route::resource('/sugerencias','App\Http\Controllers\ControllerApiSugerencias');
