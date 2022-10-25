@@ -45,6 +45,9 @@ class VecinoController extends Controller
         $bloqueado->id_usuario=$request[0]['id_usuario'];
         $bloqueado->id_grupo=$request[0]['id_grupo'];
         $bloqueado->save();
+        $usuario=Usuario::find($request[0]['id_usuario']);
+        $usuario->id_grupo='';
+        $usuario->save();
         return RespuestaAndroid(1,'Usario Bloqueado.');
         
     }

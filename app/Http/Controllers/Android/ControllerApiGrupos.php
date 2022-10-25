@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Grupo;
 use App\Models\Usuario;
+use App\Models\Bloqueado;
 use DB;
 
 class ControllerApiGrupos extends Controller
@@ -49,17 +50,23 @@ class ControllerApiGrupos extends Controller
     }
 
     function UnirseGrupo(Request $request){
-        $grupo=Grupo::find($request->id_grupo);
+        $request=PostmanAndroid($request);
+        $grupo=Grupo::find($request[0]['id_grupo']);
+        $bloqueado=Bloqueado::where('id_usuario',$request[0]['id_usuario'])->where('id_grupo',$request[0]['id_grupo'])->first();
+        if($bloqueado){
+            return RespuestaAndroid(0,'Estas bloqueado en este grupo.');
+        }
         if($grupo){
-            $usuario=Usuario::find($request->id_usuario);
-            $usuario->id_grupo=$request->id_grupo;
-            if($usuario->save()){
-                return $grupo;
+            $usuario=Usuario::find($request[0]['id_usuario']);
+            $usuario->id_grupo=$request[0]['id_grupo'];
+            if($usuario->save()){            
+                
+                return RespuestaAndroid(1,'',$grupo);
             }else{
-                return array('error'=>'Error al guardar los datos.');
+                return RespuestaAndroid(0,'Error al guardar los datos.');
             }
         }else{
-            return array('error'=>'El grupo no existe.');
+            return RespuestaAndroid(0,'El grupo no existe.');
         }
     }
 
@@ -75,5 +82,19 @@ class ControllerApiGrupos extends Controller
         }else{
                 return array('error'=>'Error al salir del grupo.');
         }
+    }
+
+    function GetGrupo(Request $request){
+        $request=PostmanAndroid($request);
+        $usuario=Usuario::find($request[0]['id_usuario']);
+        if($usuario){
+            
+            return RespuestaAndroid(1,'',$usuario);
+        
+        }else{
+            return RespuestaAndroid(1,'No se encontro el usuario.');
+        }
+        
+        
     }
 }
