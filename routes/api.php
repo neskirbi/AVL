@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  
 Route::Post('GetAlertas', 'App\Http\Controllers\Android\AlertaController@GetAlertas');
 
+Route::Post('EnviarAlertas', 'App\Http\Controllers\Android\AlertaController@EnviarAlertas');
+
 
 Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
 
