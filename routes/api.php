@@ -24,10 +24,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  */
 
  
+Route::Post('GetPreAlertas', 'App\Http\Controllers\Android\AlertaController@GetPreAlertas');
+
 Route::Post('GetAlertas', 'App\Http\Controllers\Android\AlertaController@GetAlertas');
+
+Route::Post('GetAvisos', 'App\Http\Controllers\Android\AvisoController@GetAvisos');
 
 Route::Post('EnviarAlertas', 'App\Http\Controllers\Android\AlertaController@EnviarAlertas');
 
+Route::Post('EnviarAvisos', 'App\Http\Controllers\Android\AvisoController@EnviarAvisos');
 
 Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
 
