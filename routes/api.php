@@ -40,11 +40,14 @@ Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
 
 Route::Post('GetDatos', 'App\Http\Controllers\Android\UsuarioController@GetDatos');
 
-
 Route::Post('UpdateDatos', 'App\Http\Controllers\Android\UsuarioController@UpdateDatos');
 
 Route::Post('UpdatePass', 'App\Http\Controllers\Android\UsuarioController@UpdatePass');
 
+
+/**
+ * Rutas grupo
+ */
 
 Route::post('CrearGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@CrearGrupo');
 
@@ -52,19 +55,21 @@ Route::post('UnirseGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@Uni
 
 Route::post('DejarGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@DejarGrupo');
 
-
 Route::post('GetGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@GetGrupo');
-
 
 Route::Post('GetVecinos', 'App\Http\Controllers\Android\VecinoController@GetVecinos');
 
 Route::Post('GetBloqueados', 'App\Http\Controllers\Android\VecinoController@GetBloqueados');
 
-
-
 Route::Post('BloquearVecino', 'App\Http\Controllers\Android\VecinoController@BloquearVecino');
 
 Route::Post('DesbloquearVecino', 'App\Http\Controllers\Android\VecinoController@DesbloquearVecino');
+
+/**Mensajes
+ * 
+ * 
+ */
+Route::Post('GuardarMensaje', 'App\Http\Controllers\Android\MensajeController@GuardarMensaje');
 
 //Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
 //Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
