@@ -11,7 +11,7 @@ class MensajeController extends Controller
        $request=PostmanAndroid($request);
 
        foreach($request as $mensaje){
-        //return $mensaje;
+        
             if(!Mensaje::find($mensaje['id_mensaje'])){
                 $mensajee=new Mensaje();
                 $mensajee->id_mensaje=$mensaje['id_mensaje'];
@@ -21,12 +21,29 @@ class MensajeController extends Controller
                 $mensajee->mensaje=isset($mensaje['mensaje']) ? $mensaje['mensaje'] : '';
                 $mensajee->audio=isset($mensaje['audio']) ? $mensaje['audio'] : '';
                 $mensajee->video=isset($mensaje['video']) ? $mensaje['video'] : '';
-                $mensajee->created_at=$mensaje['created_at'];
-                $mensajee->updated_at=$mensaje['updated_at'];
+                //$mensajee->created_at=$mensaje['created_at'];
+                //$mensajee->updated_at=$mensaje['updated_at'];
                 $mensajee->save();
             }
            
        }
        return RespuestaAndroid(1,'');
+    }
+
+
+    function ActualizarMensajes(Request $request){
+        //return $request;
+        $request=PostmanAndroid($request);
+        $ids=array();
+        $id_grupo="";
+        foreach($request as $mensaje){
+            $ids[]=$mensaje['id'];  
+            $id_grupo=$mensaje['id_grupo'];          
+           
+        }
+
+        $mensaje=Mensaje::whereNotIn('id_mensaje',$ids)->where('id_grupo',$id_grupo)->get();
+       return RespuestaAndroid(1,count($mensaje),$mensaje);
+
     }
 }

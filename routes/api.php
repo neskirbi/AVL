@@ -71,6 +71,9 @@ Route::Post('DesbloquearVecino', 'App\Http\Controllers\Android\VecinoController@
  */
 Route::Post('GuardarMensaje', 'App\Http\Controllers\Android\MensajeController@GuardarMensaje');
 
+
+Route::Post('ActualizarMensajes', 'App\Http\Controllers\Android\MensajeController@ActualizarMensajes');
+
 //Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
 //Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
 //Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
