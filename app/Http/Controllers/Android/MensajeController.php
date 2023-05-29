@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Android;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mensaje;
+use DB;
 class MensajeController extends Controller
 {
     function GuardarMensaje(Request $request){
@@ -32,18 +33,30 @@ class MensajeController extends Controller
 
 
     function ActualizarMensajes(Request $request){
-        //return $request;
         $request=PostmanAndroid($request);
-        $ids=array();
-        $id_grupo="";
-        foreach($request as $mensaje){
-            $ids[]=$mensaje['id'];  
-            $id_grupo=$mensaje['id_grupo'];          
-           
-        }
+        //return $request;
+        $id=$request[0]['id'];
+        $id_grupo=$request[0]['id_grupo'];
+        
 
-        $mensaje=Mensaje::whereNotIn('id_mensaje',$ids)->where('id_grupo',$id_grupo)->get();
-       return RespuestaAndroid(1,count($mensaje),$mensaje);
+        if($id==""){
+
+            $mensaje=Mensaje::select('mensajes.id_mensaje',
+            DB::RAW("(select concat(usuarios.nombres,' ',usuarios.apellidos) from usuarios where id_usuario=mensajes.id_usuario) as nombre"),
+            'mensajes.id_usuario','mensajes.imagen','mensajes.video','mensajes.audio','mensajes.mensaje','mensajes.created_at','mensajes.updated_at')
+            ->whereraw(" id_grupo='".$id_grupo."'")
+            ->get();
+
+
+        }else{
+            $mensaje=Mensaje::select('mensajes.id_mensaje',
+            DB::RAW("(select concat(usuarios.nombres,' ',usuarios.apellidos) from usuarios where id_usuario=mensajes.id_usuario) as nombre"),
+            'mensajes.id_usuario','mensajes.imagen','mensajes.video','mensajes.audio','mensajes.mensaje','mensajes.created_at','mensajes.updated_at')
+            ->whereraw("created_at > (select created_at from mensajes where id_mensaje='".$id."') and id_grupo='".$id_grupo."'")
+            ->get();
+        }
+        
+        return RespuestaAndroid(1,count($mensaje),$mensaje);
 
     }
 }
