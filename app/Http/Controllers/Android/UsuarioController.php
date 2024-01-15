@@ -38,9 +38,11 @@ class UsuarioController extends Controller
     }
 
     function Login(Request $request){
+        $request=PostmanAndroid($request);
+        
         $usuario = DB::table('usuarios')
         ->leftjoin('grupos', 'grupos.id_grupo', '=', 'usuarios.id_grupo')
-        ->where('usuarios.mail',$request->mail)
+        ->where('usuarios.mail',$request[0]['mail'])
         ->select('usuarios.id_usuario','usuarios.id_grupo',
         'usuarios.nombres','usuarios.apellidos',
         'usuarios.direccion','grupos.nombre','usuarios.pass')
@@ -48,18 +50,22 @@ class UsuarioController extends Controller
 
         if($usuario){
 
-            if($usuario->pass == $request->pass){
+            if($usuario->pass == $request[0]['pass']){
                 $usuario_update=Usuario::find($usuario->id_usuario);
                 $usuario_update->ult_login=GetDateTimeNow();
                 $usuario_update->save();            
                 
-                return json_encode($usuario);
+               
+                return RespuestaAndroid(1,'',array(0=>$usuario));
             }else{
-                return array('error' => "Contraseña incorrecta.");
+                
+                return RespuestaAndroid(0,'Contraseña incorrecta.');
+                
             }
             
         }else{
-            return array('error' => "Usuario no registrado.");
+            return RespuestaAndroid(0,'Usuario no registrado.');
+            
         }
         
 
