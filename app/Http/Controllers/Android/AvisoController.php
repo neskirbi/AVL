@@ -40,7 +40,12 @@ class AvisoController extends Controller
         'id_grupo',
         'created_at',
         'asunto',
-        'mensaje',DB::raw("(select concat(nombres,' ',apellidos) from usuarios where id_usuario=avisos.id_usuario) as nombre"))->whereNotIn('id_aviso', $ids)->where('id_grupo',$request[0]['id_grupo'])->get();
+        'mensaje',DB::raw("(select concat(nombres,' ',apellidos) from usuarios where id_usuario=avisos.id_usuario) as nombre"))
+        ->whereNotIn('id_aviso', $ids)
+        ->where('id_grupo',$request[0]['id_grupo'])
+        ->get();
+       
+
         return RespuestaAndroid(1,'',$alertas);
     }
 }

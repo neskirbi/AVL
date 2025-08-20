@@ -22,8 +22,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 /**
  * Rutas Usiarios 
  */
+Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
 
+Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
  
+Route::Post('GetDatos', 'App\Http\Controllers\Android\UsuarioController@GetDatos');
+
 Route::Post('GetPreAlertas', 'App\Http\Controllers\Android\AlertaController@GetPreAlertas');
 
 Route::Post('GetAlertas', 'App\Http\Controllers\Android\AlertaController@GetAlertas');
@@ -33,12 +37,6 @@ Route::Post('GetAvisos', 'App\Http\Controllers\Android\AvisoController@GetAvisos
 Route::Post('EnviarAlertas', 'App\Http\Controllers\Android\AlertaController@EnviarAlertas');
 
 Route::Post('EnviarAvisos', 'App\Http\Controllers\Android\AvisoController@EnviarAvisos');
-
-Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
-
-Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
-
-Route::Post('GetDatos', 'App\Http\Controllers\Android\UsuarioController@GetDatos');
 
 Route::Post('UpdateDatos', 'App\Http\Controllers\Android\UsuarioController@UpdateDatos');
 
@@ -79,3 +77,10 @@ Route::Post('ActualizarMensajes', 'App\Http\Controllers\Android\MensajeControlle
 //Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
 //Route::get('/unirseconqr/{id_grupo}/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@unirseconqr')->name('grupos.unirse');
 
+
+
+/**
+ * 
+ * Para el chat lo idel sera obtener los mensajes e tre la fecha de el ultimo que tienes a l mas reciente guardado para que sno consuma tanto la consulta 
+ * y no estar obteniendo todos 
+ */

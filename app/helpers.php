@@ -13,6 +13,21 @@ function GetDateTimeNow(){
 }
 
 
+
+function FechaFormateadaTiempo($fecha){
+       
+    $dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    $meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    $anio=date('Y',strtotime($fecha));
+    $mes=$meses[date('m',strtotime($fecha))-1];
+    $dia=date('d',strtotime($fecha));
+    $diasemana=$dias[date('w',strtotime($fecha))];
+    
+    return $diasemana.' '.$dia.' '.$mes.' '.$anio.' '.date('H:i',strtotime($fecha));
+}
+
+
+
 function PostmanAndroid($request){
     if(isset($request->android)){
         $request=$request->android;
