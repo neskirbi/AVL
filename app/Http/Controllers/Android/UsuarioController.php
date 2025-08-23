@@ -9,33 +9,42 @@ use DB;
 
 class UsuarioController extends Controller
 {
-    function Registrar(Request $request){
-        $usuario = DB::table('usuarios')
-        ->where('mail',$request->mail)
+    function Registrar(Request $request) {
+    // Verificar si el usuario ya existe
+    $usuarioExistente = DB::table('usuarios')
+        ->where('mail', $request->mail)
         ->first();
 
-        if(!$usuario){
-            
-            $usuario=new Usuario();
-            $usuario->id_usuario=GetUuid();
-            $usuario->nombres=$request->nombres;
-            $usuario->apellidos=$request->apellidos;
-            $usuario->direccion=$request->direccion;
-            $usuario->mail=$request->mail;
-            $usuario->pass=$request->pass;
-            $usuario->ult_login=GetDateTimeNow('Y-m-d H:i:s');
-            
-            if($usuario->save()){
-                return $usuario;
-            }else{
-                return array('error' => "Error al registrar.");
-            }
-        }else{
-            return array('error' => "El correo ya se encuentra en uso.");
-        }
-
-        
+    if ($usuarioExistente) {
+        return response()->json([
+            'error' => 'El correo ya se encuentra en uso'
+        ], 409);
     }
+
+    // Crear nuevo usuario
+    $usuario = new Usuario();
+    $usuario->id_usuario = GetUuid();
+    $usuario->id_grupo = $request->id_grupo ?? 'usuario'; // Valor por defecto
+    $usuario->nombres = $request->nombres;
+    $usuario->apellidos = $request->apellidos;
+    $usuario->direccion = $request->direccion;
+    $usuario->mail = $request->mail;
+    $usuario->pass = ($request->pass); // ¡IMPORTANTE! Encriptar contraseña
+    $usuario->fecha = now();
+    $usuario->ult_login = now();
+    $usuario->updated_at = now();
+
+    if ($usuario->save()) {
+        return response()->json([
+            'message' => 'Registro exitoso',
+            'usuario' => $usuario
+        ], 201);
+    } else {
+        return response()->json([
+            'error' => 'Error al registrar'
+        ], 500);
+    }
+}
 
     function Login(Request $request){
         $request=PostmanAndroid($request);
