@@ -10,41 +10,41 @@ use DB;
 class UsuarioController extends Controller
 {
     function Registrar(Request $request) {
-    // Verificar si el usuario ya existe
-    $usuarioExistente = DB::table('usuarios')
-        ->where('mail', $request->mail)
-        ->first();
+        // Verificar si el usuario ya existe
+        $usuarioExistente = DB::table('usuarios')
+            ->where('mail', $request->mail)
+            ->first();
 
-    if ($usuarioExistente) {
-        return response()->json([
-            'error' => 'El correo ya se encuentra en uso'
-        ], 409);
+        if ($usuarioExistente) {
+            return response()->json([
+                'error' => 'El correo ya se encuentra en uso'
+            ], 409);
+        }
+
+        // Crear nuevo usuario
+        $usuario = new Usuario();
+        $usuario->id_usuario = GetUuid();
+        $usuario->id_grupo = $request->id_grupo ?? 'usuario'; // Valor por defecto
+        $usuario->nombres = $request->nombres;
+        $usuario->apellidos = $request->apellidos;
+        $usuario->direccion = $request->direccion;
+        $usuario->mail = $request->mail;
+        $usuario->pass = ($request->pass); // ¡IMPORTANTE! Encriptar contraseña
+        $usuario->fecha = now();
+        $usuario->ult_login = now();
+        $usuario->updated_at = now();
+
+        if ($usuario->save()) {
+            return response()->json([
+                'message' => 'Registro exitoso',
+                'usuario' => $usuario
+            ], 201);
+        } else {
+            return response()->json([
+                'error' => 'Error al registrar'
+            ], 500);
+        }
     }
-
-    // Crear nuevo usuario
-    $usuario = new Usuario();
-    $usuario->id_usuario = GetUuid();
-    $usuario->id_grupo = $request->id_grupo ?? 'usuario'; // Valor por defecto
-    $usuario->nombres = $request->nombres;
-    $usuario->apellidos = $request->apellidos;
-    $usuario->direccion = $request->direccion;
-    $usuario->mail = $request->mail;
-    $usuario->pass = ($request->pass); // ¡IMPORTANTE! Encriptar contraseña
-    $usuario->fecha = now();
-    $usuario->ult_login = now();
-    $usuario->updated_at = now();
-
-    if ($usuario->save()) {
-        return response()->json([
-            'message' => 'Registro exitoso',
-            'usuario' => $usuario
-        ], 201);
-    } else {
-        return response()->json([
-            'error' => 'Error al registrar'
-        ], 500);
-    }
-}
 
     function Login(Request $request){
         $request=PostmanAndroid($request);
