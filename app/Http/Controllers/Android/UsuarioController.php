@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Android;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use DB;
@@ -29,7 +31,7 @@ class UsuarioController extends Controller
         $usuario->apellidos = $request->apellidos;
         $usuario->direccion = $request->direccion;
         $usuario->mail = $request->mail;
-        $usuario->pass = ($request->pass); // ¡IMPORTANTE! Encriptar contraseña
+        $usuario->pass = password_hash($request->password,PASSWORD_DEFAULT); // ¡IMPORTANTE! Encriptar contraseña
         $usuario->fecha = now();
         $usuario->ult_login = now();
         $usuario->updated_at = now();
@@ -47,35 +49,55 @@ class UsuarioController extends Controller
     }
 
     function Login(Request $request){
-        $request=PostmanAndroid($request);
-        
-        $usuario = DB::table('usuarios')
-        ->leftjoin('grupos', 'grupos.id_grupo', '=', 'usuarios.id_grupo')
-        ->where('usuarios.mail',$request[0]['mail'])
-        ->select('usuarios.id_usuario','usuarios.id_grupo',
-        'usuarios.nombres','usuarios.apellidos',
-        'usuarios.direccion','grupos.nombre','usuarios.pass')
-        ->first();
+        // Validación de datos
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
 
-        if($usuario){
-
-            if($usuario->pass == $request[0]['pass']){
-                $usuario_update=Usuario::find($usuario->id_usuario);
-                $usuario_update->ult_login=GetDateTimeNow();
-                $usuario_update->save();            
-                
-               
-                return RespuestaAndroid(1,'',array(0=>$usuario));
-            }else{
-                
-                return RespuestaAndroid(0,'Contraseña incorrecta.');
-                
-            }
-            
-        }else{
-            return RespuestaAndroid(0,'Usuario no registrado.');
-            
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first()
+            ], 422);
         }
+
+        // Buscar usuario por email (usando el campo 'mail' de tu tabla)
+        $usuario = Usuario::where('mail', $request->email)->first();
+
+        if (!$usuario) {
+            return response()->json([
+                'error' => 'Error de Correo'
+            ], 401);
+        }
+
+        // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
+        if (password_verify($request->password, $usuario->pass)) {
+            return response()->json([
+                'error' => 'Error de Contrasenia'
+            ], 401);
+        }
+
+        // Actualizar último login
+        $usuario->update([
+            'ult_login' => now()
+        ]);
+
+        // Si usas autenticación con tokens, descomenta las siguientes líneas:
+        /*
+        $token = $usuario->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'usuario' => $usuario,
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ]);
+        */
+
+        // Si NO usas tokens, devuelve solo el usuario:
+        return response()->json([
+            'usuario' => $usuario,
+            'message' => 'Login exitoso'
+        ]);
         
 
     }
