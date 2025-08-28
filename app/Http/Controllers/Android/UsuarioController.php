@@ -12,6 +12,12 @@ use DB;
 class UsuarioController extends Controller
 {
     function Registrar(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'mail' => 'required|mail',
+            'pass' => 'required|min:6'
+        ]);
+
         // Verificar si el usuario ya existe
         $usuarioExistente = DB::table('usuarios')
             ->where('mail', $request->mail)
@@ -31,7 +37,7 @@ class UsuarioController extends Controller
         $usuario->apellidos = $request->apellidos;
         $usuario->direccion = $request->direccion;
         $usuario->mail = $request->mail;
-        $usuario->pass = password_hash($request->password,PASSWORD_DEFAULT); // ¡IMPORTANTE! Encriptar contraseña
+        $usuario->pass =password_hash($request->pass,PASSWORD_DEFAULT); // ¡IMPORTANTE! Encriptar contraseña
         $usuario->fecha = now();
         $usuario->ult_login = now();
         $usuario->updated_at = now();
@@ -49,10 +55,12 @@ class UsuarioController extends Controller
     }
 
     function Login(Request $request){
+       
+
         // Validación de datos
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|min:6'
+            'pass' => 'required|min:6'
         ]);
 
         if ($validator->fails()) {
@@ -71,7 +79,7 @@ class UsuarioController extends Controller
         }
 
         // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
-        if (password_verify($request->password, $usuario->pass)) {
+        if (!password_verify($request->pass, $usuario->pass)) {
             return response()->json([
                 'error' => 'Error de Contrasenia'
             ], 401);
