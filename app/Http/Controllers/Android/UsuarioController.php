@@ -55,60 +55,52 @@ class UsuarioController extends Controller
     }
 
     function Login(Request $request){
-       
+    // Validación de datos
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'pass' => 'required|min:6'
+    ]);
 
-        // Validación de datos
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'pass' => 'required|min:6'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()->first()
-            ], 422);
-        }
-
-        // Buscar usuario por email (usando el campo 'mail' de tu tabla)
-        $usuario = Usuario::where('mail', $request->email)->first();
-
-        if (!$usuario) {
-            return response()->json([
-                'error' => 'Error de Correo'
-            ], 401);
-        }
-
-        // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
-        if (!password_verify($request->pass, $usuario->pass)) {
-            return response()->json([
-                'error' => 'Error de Contrasenia'
-            ], 401);
-        }
-
-        // Actualizar último login
-        $usuario->update([
-            'ult_login' => now()
-        ]);
-
-        // Si usas autenticación con tokens, descomenta las siguientes líneas:
-        /*
-        $token = $usuario->createToken('auth_token')->plainTextToken;
-
+    if ($validator->fails()) {
         return response()->json([
-            'usuario' => $usuario,
-            'access_token' => $token,
-            'token_type' => 'Bearer'
-        ]);
-        */
-
-        // Si NO usas tokens, devuelve solo el usuario:
-        return response()->json([
-            'usuario' => $usuario,
-            'message' => 'Login exitoso'
-        ]);
-        
-
+            'error' => $validator->errors()->first()
+        ], 422);
     }
+
+    // Buscar usuario por email (usando el campo 'mail' de tu tabla)
+    $usuario = Usuario::where('mail', $request->email)->first();
+
+    if (!$usuario) {
+        return response()->json([
+            'error' => 'Error de Correo'
+        ], 401);
+    }
+
+    // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
+    if (!password_verify($request->pass, $usuario->pass)) {
+        return response()->json([
+            'error' => 'Error de Contrasenia'
+        ], 401);
+    }
+
+    // Actualizar último login
+    $usuario->update([
+        'ult_login' => now()
+    ]);
+
+    
+    // Excluir la contraseña de la respuesta
+    $usuarioData = $usuario->toArray();
+    unset($usuarioData['pass']); // Eliminar campo de contraseña
+    
+    // Opcional: agregar mensaje
+    $usuarioData['message'] = 'Login exitoso';
+
+    
+
+    // DEVUELVE SOLO EL USUARIO (sin encapsular en 'usuario')
+    return response()->json($usuario, 200);
+}
 
     function GetDatos(Request $request){
         $request=PostmanAndroid($request);
