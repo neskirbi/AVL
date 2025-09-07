@@ -47,13 +47,13 @@ Route::Post('UpdatePass', 'App\Http\Controllers\Android\UsuarioController@Update
  * Rutas grupo
  */
 
-Route::post('CrearGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@CrearGrupo');
+Route::post('CrearGrupo', 'App\Http\Controllers\Android\GrupoController@CrearGrupo');
 
-Route::post('UnirseGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@UnirseGrupo');
+Route::post('UnirseGrupo', 'App\Http\Controllers\Android\GrupoController@UnirseGrupo');
 
-Route::post('DejarGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@DejarGrupo');
+Route::post('DejarGrupo', 'App\Http\Controllers\Android\GrupoController@DejarGrupo');
 
-Route::post('GetGrupo', 'App\Http\Controllers\Android\ControllerApiGrupos@GetGrupo');
+Route::post('GetGrupo', 'App\Http\Controllers\Android\GrupoController@GetGrupo');
 
 Route::Post('GetVecinos', 'App\Http\Controllers\Android\VecinoController@GetVecinos');
 
@@ -72,10 +72,10 @@ Route::Post('GuardarMensaje', 'App\Http\Controllers\Android\MensajeController@Gu
 
 Route::Post('ActualizarMensajes', 'App\Http\Controllers\Android\MensajeController@ActualizarMensajes');
 
-//Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@migrupo')->name('grupos.migrupo');
-//Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\ControllerApiGrupos@unirse')->name('grupos.unirse');
-//Route::get('salir/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@salir')->name('grupos.salir');
-//Route::get('/unirseconqr/{id_grupo}/{id_usuario}', 'App\Http\Controllers\ControllerApiGrupos@unirseconqr')->name('grupos.unirse');
+//Route::get('migrupo/{id_grupo}', 'App\Http\Controllers\GrupoController@migrupo')->name('grupos.migrupo');
+//Route::get('unirse/{id_usuario}/{id_grupo}', 'App\Http\Controllers\GrupoController@unirse')->name('grupos.unirse');
+//Route::get('salir/{id_usuario}', 'App\Http\Controllers\GrupoController@salir')->name('grupos.salir');
+//Route::get('/unirseconqr/{id_grupo}/{id_usuario}', 'App\Http\Controllers\GrupoController@unirseconqr')->name('grupos.unirse');
 
 
 

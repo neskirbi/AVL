@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Grupo extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_grupo'; // or null
+    protected $primaryKey = 'id'; // or null
     public $incrementing = false;
 }
