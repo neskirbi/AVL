@@ -51,7 +51,7 @@ Route::post('CrearGrupo', 'App\Http\Controllers\Android\GrupoController@CrearGru
 
 Route::post('UnirseGrupo', 'App\Http\Controllers\Android\GrupoController@UnirseGrupo');
 
-Route::post('DejarGrupo', 'App\Http\Controllers\Android\GrupoController@DejarGrupo');
+Route::post('SalirdelGrupo', 'App\Http\Controllers\Android\GrupoController@SalirdelGrupo');
 
 Route::post('GetGrupo', 'App\Http\Controllers\Android\GrupoController@GetGrupo');
 
