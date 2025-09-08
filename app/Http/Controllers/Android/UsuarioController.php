@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use App\Models\Grupo;
 use DB;
 
 class UsuarioController extends Controller
@@ -55,96 +56,66 @@ class UsuarioController extends Controller
     }
 
     function Login(Request $request){
-    // Validación de datos
-    $validator = Validator::make($request->all(), [
-        'email' => 'required|email',
-        'pass' => 'required|min:6'
-    ]);
+        // Validación de datos
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'pass' => 'required|min:6'
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json([
-            'error' => $validator->errors()->first()
-        ], 422);
-    }
-
-    // Buscar usuario por email (usando el campo 'mail' de tu tabla)
-    $usuario = Usuario::where('mail', $request->email)->first();
-
-    if (!$usuario) {
-        return response()->json([
-            'error' => 'Error de Correo'
-        ], 401);
-    }
-
-    // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
-    if (!password_verify($request->pass, $usuario->pass)) {
-        return response()->json([
-            'error' => 'Error de Contrasenia'
-        ], 401);
-    }
-
-    // Actualizar último login
-    $usuario->update([
-        'ult_login' => now()
-    ]);
-
-    
-    // Excluir la contraseña de la respuesta
-    $usuarioData = $usuario->toArray();
-    unset($usuarioData['pass']); // Eliminar campo de contraseña
-    
-    // Opcional: agregar mensaje
-    $usuarioData['message'] = 'Login exitoso';
-
-    
-
-    // DEVUELVE SOLO EL USUARIO (sin encapsular en 'usuario')
-    return response()->json($usuario, 200);
-}
-
-    function GetDatos(Request $request){
-        $request=PostmanAndroid($request);
-        $usuario=Usuario::find($request[0]['id']);
-        if($usuario){
-            return RespuestaAndroid(1,'',$usuario);
-        }else{
-            return RespuestaAndroid(0,'Error de id.');
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first()
+            ], 422);
         }
-        
-    }
 
-    function UpdateDatos(Request $request){
-        $request=PostmanAndroid($request);
-        $usuario=Usuario::find($request[0]['id']);
-        if($usuario){
-            $usuario->nombres=$request[0]['nombres'];
-            $usuario->apellidos=$request[0]['apellidos'];
-            $usuario->direccion=$request[0]['direccion'];
-            $usuario->ubicacion=$request[0]['ubicacion'];
-            $usuario->save();
-            return RespuestaAndroid(1,'Datos Actualizados.');
-        }else{
-            return RespuestaAndroid(0,'Error de id.');
+        // Buscar usuario por email (usando el campo 'mail' de tu tabla)
+        $usuario = Usuario::where('mail', $request->email)->first();
+
+        if (!$usuario) {
+            return response()->json([
+                'error' => 'Error de Correo'
+            ], 401);
         }
-        
-    }
 
-    function UpdatePass(Request $request){
-        $request=PostmanAndroid($request);
-        $usuario=Usuario::find($request[0]['id']);
-        if($usuario){
-            if($usuario->pass==$request[0]['pass']){
-                $usuario->pass=$request[0]['pass1'];
-                $usuario->save();
-                return RespuestaAndroid(1,'Contraseña Actualizada.');
-            }else{
-                return RespuestaAndroid(0,'Error de contreseña.');
+        // Verificar contraseña (comparando con el campo 'pass' de tu tabla)
+        if (!password_verify($request->pass, $usuario->pass)) {
+            return response()->json([
+                'error' => 'Error de Contrasenia'
+            ], 401);
+        }
+
+        // Actualizar último login
+        $usuario->update([
+            'ult_login' => now()
+        ]);
+
+        // Buscar información del grupo si el usuario tiene id_grupo
+        $grupoData = null;
+        if ($usuario->id_grupo) {
+            $grupo = Grupo::where('id', $usuario->id_grupo)->first();
+            if ($grupo) {
+                $grupoData = [
+                    'id' => $grupo->id,
+                    'grupo' => $grupo->grupo,
+                    'descripcion' => $grupo->descripcion,
+                    'id_usuario' => $grupo->id_usuario,
+                    'created_at' => $grupo->created_at,
+                    'updated_at' => $grupo->updated_at
+                ];
             }
-            
-           
-        }else{
-            return RespuestaAndroid(0,'Error de id.');
         }
+
+        // Preparar respuesta
+        $responseData = $usuario->toArray();
+        $responseData['pass']="";
         
+        // Agregar información del grupo a la respuesta si existe
+        if ($grupoData) {
+            $responseData['grupo_info'] = $grupoData;
+        }
+
+        $responseData['message'] = 'Login exitoso';
+
+        return response()->json($responseData, 200);
     }
 }
