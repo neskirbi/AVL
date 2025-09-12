@@ -19,6 +19,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+
+/**
+ * Rutas Avisos
+ */
+//Consultar avisos
+Route::get('Avisos/{id_grupo}', 'App\Http\Controllers\Android\AvisoController@Avisos');
+//Crear Avisos
+Route::Post('CrearAviso', 'App\Http\Controllers\Android\AvisoController@CrearAviso');
+//Eliminar Avisos
+Route::Post('EliminarAviso', 'App\Http\Controllers\Android\AvisoController@EliminarAviso');
+ 
+
+
+
+
+
 /**
  * Rutas Usiarios 
  */
@@ -26,21 +42,7 @@ Route::Post('Login', 'App\Http\Controllers\Android\UsuarioController@Login');
 
 Route::Post('Registro', 'App\Http\Controllers\Android\UsuarioController@Registrar');
  
-Route::Post('GetDatos', 'App\Http\Controllers\Android\UsuarioController@GetDatos');
 
-Route::Post('GetPreAlertas', 'App\Http\Controllers\Android\AlertaController@GetPreAlertas');
-
-Route::Post('GetAlertas', 'App\Http\Controllers\Android\AlertaController@GetAlertas');
-
-Route::Post('GetAvisos', 'App\Http\Controllers\Android\AvisoController@GetAvisos');
-
-Route::Post('EnviarAlertas', 'App\Http\Controllers\Android\AlertaController@EnviarAlertas');
-
-Route::Post('EnviarAvisos', 'App\Http\Controllers\Android\AvisoController@EnviarAvisos');
-
-Route::Post('UpdateDatos', 'App\Http\Controllers\Android\UsuarioController@UpdateDatos');
-
-Route::Post('UpdatePass', 'App\Http\Controllers\Android\UsuarioController@UpdatePass');
 
 
 /**
@@ -53,15 +55,7 @@ Route::post('UnirseGrupo', 'App\Http\Controllers\Android\GrupoController@UnirseG
 
 Route::post('SalirdelGrupo', 'App\Http\Controllers\Android\GrupoController@SalirdelGrupo');
 
-Route::post('GetGrupo', 'App\Http\Controllers\Android\GrupoController@GetGrupo');
 
-Route::Post('GetVecinos', 'App\Http\Controllers\Android\VecinoController@GetVecinos');
-
-Route::Post('GetBloqueados', 'App\Http\Controllers\Android\VecinoController@GetBloqueados');
-
-Route::Post('BloquearVecino', 'App\Http\Controllers\Android\VecinoController@BloquearVecino');
-
-Route::Post('DesbloquearVecino', 'App\Http\Controllers\Android\VecinoController@DesbloquearVecino');
 
 /**Mensajes
  * 
